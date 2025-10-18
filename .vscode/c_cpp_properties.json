@@ -14,6 +14,7 @@
             "includePath": [
                 "app/include",
                 "driver/usart",
+                "driver/tim",
                 "firmware/cmsis/core",
                 "firmware/cmsis/device",
                 "firmware/driver/inc"

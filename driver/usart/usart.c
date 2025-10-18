@@ -23,23 +23,23 @@ static void usart_dma_init(void)
     DMA_InitTypeDef DMA_InitStructure;
     DMA_StructInit(&DMA_InitStructure);
 
-    DMA_DeInit(DMA2_Stream7);
-    while(DMA_GetCmdStatus(DMA2_Stream7) != DISABLE);
+    DMA_DeInit(DMA2_Stream7); // 复位DMA2 Stream7到默认状态
+    while(DMA_GetCmdStatus(DMA2_Stream7) != DISABLE); // 等待DMA Stream被禁用
 
     DMA_InitStructure.DMA_Channel = DMA_Channel_4;
-    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USART1->DR;
-    DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USART1->DR; // 设置外设地址为USART1数据寄存器地址
+    DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral; // 设置传输方向：内存到外设
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 外设地址不递增
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable; // 内存地址递增（逐个发送数据缓冲区中的字节）
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
     DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-    DMA_InitStructure.DMA_Priority = DMA_Priority_Low;
-    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal; // DMA模式：正常模式（非循环模式）
+    DMA_InitStructure.DMA_Priority = DMA_Priority_Low;  // DMA优先级：低优先级
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable; // 禁用FIFO模式
     DMA_ITConfig(DMA2_Stream7, DMA_IT_TC, ENABLE);
     DMA_Init(DMA2_Stream7, &DMA_InitStructure);
 
-    USART_DMACmd(USART1, USART_DMAReq_Tx, ENABLE);
+    USART_DMACmd(USART1, USART_DMAReq_Tx, ENABLE); // 使能USART1的DMA发送请求
 }
 
 static void usart_usart_init(void)
@@ -95,15 +95,15 @@ void usart_send_data(const char *data)
     uint32_t len = strlen(data);
     if (len == 0) return;
 
-    DMA_Cmd(DMA2_Stream7, DISABLE);
-    while (DMA_GetCmdStatus(DMA2_Stream7) != DISABLE);
+    DMA_Cmd(DMA2_Stream7, DISABLE); // 禁用DMA Stream
+    while (DMA_GetCmdStatus(DMA2_Stream7) != DISABLE); // 等待DMA Stream被完全禁用
 
-    DMA2_Stream7->M0AR = (uint32_t)data;
-    DMA2_Stream7->NDTR = len;
+    DMA2_Stream7->M0AR = (uint32_t)data; // 设置内存地址（要发送的数据缓冲区地址）
+    DMA2_Stream7->NDTR = len; // 设置要传输的数据数量
 
-    DMA_Cmd(DMA2_Stream7, ENABLE);
+    DMA_Cmd(DMA2_Stream7, ENABLE); // 使能DMA Stream开始传输
 
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET); 
     USART_ClearFlag(USART1, USART_FLAG_TC);
 }
 
@@ -137,8 +137,8 @@ void USART1_IRQHandler(void)
 
 void DMA2_Stream7_IRQHandler(void)
 {
-    if (DMA_GetITStatus(DMA2_Stream7, DMA_IT_TCIF7) != RESET)
+    if (DMA_GetITStatus(DMA2_Stream7, DMA_IT_TCIF7) != RESET) // 检查DMA2 Stream7的传输完成中断标志是否置位
     {
-        DMA_ClearITPendingBit(DMA2_Stream7, DMA_IT_TCIF7);
+        DMA_ClearITPendingBit(DMA2_Stream7, DMA_IT_TCIF7); // 清除传输完成中断标志位
     }
 }

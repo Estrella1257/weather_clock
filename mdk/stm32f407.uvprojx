@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart</IncludePath>
+              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -399,6 +399,11 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\usart\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\tim\delay.c</FilePath>
             </File>
           </Files>
         </Group>

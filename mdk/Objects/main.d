@@ -36,3 +36,4 @@
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\main.o: ..\driver\usart\usart.h
+.\objects\main.o: ..\driver\tim\delay.h
