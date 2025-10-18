@@ -1,11 +1,8 @@
 .\objects\main.o: ..\app\main.c
-.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\main.o: ..\app\inc\main.h
-.\objects\main.o: ..\app\inc\board.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\main.o: ..\firmware\cmsis\core\core_cm4.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\main.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\main.o: ..\firmware\cmsis\core\core_cmSimd.h
@@ -38,5 +35,4 @@
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\main.o: ..\driver\led\led.h
-.\objects\main.o: ..\app\inc\delay.h
+.\objects\main.o: ..\driver\usart\usart.h

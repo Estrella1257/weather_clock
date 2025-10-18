@@ -1,5 +1,4 @@
 .\objects\board.o: ..\app\board.c
-.\objects\board.o: ..\app\inc\board.h
 .\objects\board.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\board.o: ..\firmware\cmsis\core\core_cm4.h
 .\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -35,5 +34,5 @@
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\board.o: ..\driver\led\led.h
-.\objects\board.o: ..\app\inc\delay.h
+.\objects\board.o: ..\driver\usart\usart.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h

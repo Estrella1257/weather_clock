@@ -22,7 +22,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
-#include "main.h"
+//#include "main.h"
 
 /** @addtogroup Template_Project
   * @{

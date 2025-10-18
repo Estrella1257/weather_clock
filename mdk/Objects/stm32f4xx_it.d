@@ -35,7 +35,3 @@
 .\objects\stm32f4xx_it.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\stm32f4xx_it.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\stm32f4xx_it.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\stm32f4xx_it.o: ..\app\inc\main.h
-.\objects\stm32f4xx_it.o: ..\app\inc\board.h
-.\objects\stm32f4xx_it.o: ..\driver\led\led.h
-.\objects\stm32f4xx_it.o: ..\app\inc\delay.h
