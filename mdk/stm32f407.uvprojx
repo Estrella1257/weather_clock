@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim</IncludePath>
+              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -404,6 +404,11 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\tim\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>aht20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\aht20\aht20.c</FilePath>
             </File>
           </Files>
         </Group>

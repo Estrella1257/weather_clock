@@ -37,3 +37,5 @@
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\main.o: ..\driver\usart\usart.h
 .\objects\main.o: ..\driver\tim\delay.h
+.\objects\main.o: ..\driver\aht20\aht20.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
