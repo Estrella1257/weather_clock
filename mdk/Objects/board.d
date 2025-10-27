@@ -1,4 +1,6 @@
 .\objects\board.o: ..\app\board.c
+.\objects\board.o: ..\app\include\board.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\board.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\board.o: ..\firmware\cmsis\core\core_cm4.h
 .\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -35,4 +37,13 @@
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\board.o: ..\driver\usart\usart.h
-.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\board.o: ..\driver\tim\delay.h
+.\objects\board.o: ..\driver\aht20\aht20.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\board.o: ..\driver\lcd\lcd.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\board.o: ..\driver\lcd\fonts.h
+.\objects\board.o: ..\driver\lcd\image.h
+.\objects\board.o: ..\driver\esp_at\esp_at.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\board.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stddef.h

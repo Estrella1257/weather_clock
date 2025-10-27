@@ -3,6 +3,10 @@
         "stm32f4xx_adc.h": "c",
         "stm32f4xx.h": "c",
         "main.h": "c",
-        "board.h": "c"
+        "board.h": "c",
+        "type_traits": "c",
+        "cmath": "c",
+        "limits": "c",
+        "stdint.h": "c"
     }
 }

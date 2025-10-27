@@ -1,49 +1,58 @@
 #include <stdio.h>
 #include "stm32f4xx.h"
-#include "usart.h"
-#include "delay.h"
-#include "aht20.h"
-
-extern void board_lowlevel_init(void);
+#include "main.h"
 
 void main(void)
 {
 	board_lowlevel_init();
-	usart_init();
-	tim_init();
-	aht20_init();
+	board_init();
+
+	lcd_clear(RED);
+	delay_ms(2000);
+	lcd_show_char(0, 0, 'a', &font16_maple, 1, YELLOW, BLACK);
+	lcd_show_string(0, 16, "123abc*&/?", &font16_maple, 1, YELLOW, BLACK);
+	lcd_show_string(0, 24, "23 -", &font62_maple, 1, BLACK, BLACK);
+	lcd_show_string(0, 57, "123", &font76_maple, 1, BLACK, BLACK);
+	lcd_show_string(0, 110, "12:", &font54_maple, 1, BLACK, BLACK);
+	lcd_show_string(0, 150, "天气时钟连接中℃", &font32_maple, 1, BLACK, BLACK);
+	lcd_show_string(0, 205, "一二三四五六日星期", &font20_maple, 1, BLACK, BLACK);
+	lcd_show_chinese_char(72, 0, "梅", &font32_maple, 1, BLUE, BLACK);
+
+	printf("[SYS] Build Date: %s %s\n", __DATE__, __TIME__);
+	
+    if(!esp_at_init())
+	{
+		printf("[AT] init failed!\n");
+		
+	}
+	printf("[AT] inited!\n");
+	
+	if (!esp_at_wifi_init())
+	{
+		printf("[WIFI] init failed!\n");
+		
+	}
+	printf("[WIFI] inited!\n");	
+
+	if (!esp_at_connect_wifi("Redmi K60 Pro","12345678", NULL))
+	{
+		printf("[WIFI] connect failed!\n");
+		
+	}
+	printf("[WIFI] connecting...\n");
+
+	if (!esp_at_sntp_init())
+	{
+		printf("[SNTP] init failed!\n");
+		
+	}
+	printf("[SNTP] inited!\n");
+
+	return;
+
 	
 	while(1)
 	{
-		static float last_temperature, last_humidity;
-		if(!aht20_start_measurement())
-		{
-			printf("[AHT20] start measurement failed\n");
-			return;
-		}
-
-		if(!aht20_wait_for_measurement())
-		{
-			printf("[AHT20] wait for measurement failed\n");
-			return;
-		}
-
-		float temperature = 0.0f, humidity = 0.0f;
-
-		if(!aht20_read_measurement(&temperature,&humidity))
-		{
-			printf("[AHT20] read measurement failed\n");
-			return;
-		}
-
-		if(last_temperature != temperature && last_humidity == humidity)
-		{
-			return;
-		}
-
-		last_temperature = temperature;
-		last_humidity = humidity;
-
-		printf("[AHT20] Temperature: %.1f, Humidity: %.1f\n",temperature,humidity);
+		
 	}
 }

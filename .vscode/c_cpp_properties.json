@@ -16,6 +16,8 @@
                 "driver/usart",
                 "driver/tim",
                 "driver/aht20",
+                "driver/lcd",
+                "driver/esp_at",
                 "firmware/cmsis/core",
                 "firmware/cmsis/device",
                 "firmware/driver/inc"

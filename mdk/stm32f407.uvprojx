@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20</IncludePath>
+              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20;..\driver\lcd;..\driver\esp_at</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -409,6 +409,16 @@
               <FileName>aht20.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\aht20\aht20.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp_at.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\esp_at\esp_at.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -644,6 +654,56 @@
         </Group>
         <Group>
           <GroupName>third_lib</GroupName>
+        </Group>
+        <Group>
+          <GroupName>fonts</GroupName>
+          <Files>
+            <File>
+              <FileName>font16_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font16_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font32_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font32_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font24_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font24_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font20_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font20_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font54_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font54_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font62_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font62_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font76_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\fonts\font76_maple.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>images</GroupName>
+          <Files>
+            <File>
+              <FileName>iamge_mingrixiang.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\image\iamge_mingrixiang.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

@@ -35,7 +35,16 @@
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\main.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
+.\objects\main.o: ..\app\include\main.h
+.\objects\main.o: ..\app\include\board.h
 .\objects\main.o: ..\driver\usart\usart.h
 .\objects\main.o: ..\driver\tim\delay.h
 .\objects\main.o: ..\driver\aht20\aht20.h
 .\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\main.o: ..\driver\lcd\lcd.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: ..\driver\lcd\fonts.h
+.\objects\main.o: ..\driver\lcd\image.h
+.\objects\main.o: ..\driver\esp_at\esp_at.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stddef.h

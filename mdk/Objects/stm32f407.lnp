@@ -4,6 +4,8 @@
 ".\objects\usart.o"
 ".\objects\delay.o"
 ".\objects\aht20.o"
+".\objects\lcd.o"
+".\objects\esp_at.o"
 ".\objects\startup_stm32f40_41xxx.o"
 ".\objects\stm32f4xx_it.o"
 ".\objects\system_stm32f4xx.o"
@@ -49,6 +51,14 @@
 ".\objects\stm32f4xx_tim.o"
 ".\objects\stm32f4xx_usart.o"
 ".\objects\stm32f4xx_wwdg.o"
+".\objects\font16_maple.o"
+".\objects\font32_maple.o"
+".\objects\font24_maple.o"
+".\objects\font20_maple.o"
+".\objects\font54_maple.o"
+".\objects\font62_maple.o"
+".\objects\font76_maple.o"
+".\objects\iamge_mingrixiang.o"
 --library_type=microlib --strict --scatter ".\Objects\stm32f407.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

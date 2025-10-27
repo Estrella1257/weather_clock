@@ -22,23 +22,83 @@ Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
 G:\STM32_project\weather_clock\clock_basic_plus\weather_clock\mdk\stm32f407.uvprojx
-Project File Date:  10/19/2025
+Project File Date:  10/26/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'G:\keil 5\ARM\ARMCC\Bin'
 Build target 'demo'
-compiling aht20.c...
-..\driver\aht20\aht20.h(12): warning:  #1-D: last line of file ends without a newline
+compiling board.c...
+..\driver\usart\usart.h(14): warning:  #1-D: last line of file ends without a newline
   #endif
 ..\driver\tim\delay.h(10): warning:  #1-D: last line of file ends without a newline
   #endif
-..\driver\aht20\aht20.c(151): warning:  #1-D: last line of file ends without a newline
+..\driver\aht20\aht20.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\fonts.h(31): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\image.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\lcd.h(125): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\esp_at\esp_at.h(56): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\include\board.h(15): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\board.c: 8 warnings, 0 errors
+compiling main.c...
+..\driver\usart\usart.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\tim\delay.h(10): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\aht20\aht20.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\fonts.h(31): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\image.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\lcd\lcd.h(125): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\esp_at\esp_at.h(56): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\include\board.h(15): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\include\main.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\main.c(5): warning:  #951-D: return type of function "main" must be "int"
+  void main(void)
+..\app\main.c(58): warning:  #1-D: last line of file ends without a newline
   }
-..\driver\aht20\aht20.c: 3 warnings, 0 errors
+..\app\main.c(54): warning:  #128-D: loop is not reachable
+  	while(1)
+..\app\main.c: 12 warnings, 0 errors
+compiling esp_at.c...
+..\driver\esp_at\esp_at.h(56): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\tim\delay.h(10): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\driver\esp_at\esp_at.c(284): warning:  #940-D: missing return statement at end of non-void function "esp_at_write_command" 
+  }
+..\driver\esp_at\esp_at.c(326): warning:  #181-D: argument is incompatible with corresponding format string conversion
+      if(sscanf(response,"+CWSTATE:%d,\"%63[^\"]",&wifi_state,info->ssid) != 2)
+..\driver\esp_at\esp_at.c(345): warning:  #181-D: argument is incompatible with corresponding format string conversion
+      if(sscanf(response,"+CWJAP:\"%63[^\"]\",\"%17[^\"]\",%d,%d",info->ssid,info->bssid,&info->channel,&info->rssi) != 4)
+..\driver\esp_at\esp_at.c(345): warning:  #181-D: argument is incompatible with corresponding format string conversion
+      if(sscanf(response,"+CWJAP:\"%63[^\"]\",\"%17[^\"]\",%d,%d",info->ssid,info->bssid,&info->channel,&info->rssi) != 4)
+..\driver\esp_at\esp_at.c(345): warning:  #181-D: argument is incompatible with corresponding format string conversion
+      if(sscanf(response,"+CWJAP:\"%63[^\"]\",\"%17[^\"]\",%d,%d",info->ssid,info->bssid,&info->channel,&info->rssi) != 4)
+..\driver\esp_at\esp_at.c(345): warning:  #181-D: argument is incompatible with corresponding format string conversion
+      if(sscanf(response,"+CWJAP:\"%63[^\"]\",\"%17[^\"]\",%d,%d",info->ssid,info->bssid,&info->channel,&info->rssi) != 4)
+..\driver\esp_at\esp_at.c(374): warning:  #370-D: variable "info"  has an uninitialized const field
+      esp_at_wifi_info_t info;
+..\driver\esp_at\esp_at.c(487): warning:  #1-D: last line of file ends without a newline
+  }
+..\driver\esp_at\esp_at.c(225): warning:  #177-D: function "esp_at_write_bytes"  was declared but never referenced
+  static void esp_at_write_bytes(const char *data)
+..\driver\esp_at\esp_at.c: 11 warnings, 0 errors
 linking...
-Program Size: Code=8820 RO-data=424 RW-data=52 ZI-data=1028  
+Program Size: Code=10468 RO-data=24172 RW-data=60 ZI-data=2836  
 FromELF: creating hex file...
-".\Objects\stm32f407.axf" - 0 Error(s), 3 Warning(s).
+".\Objects\stm32f407.axf" - 0 Error(s), 31 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -52,7 +112,7 @@ Package Vendor: Keil
   G:\keil 5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
