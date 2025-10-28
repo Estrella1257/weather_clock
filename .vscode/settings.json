@@ -7,6 +7,10 @@
         "type_traits": "c",
         "cmath": "c",
         "limits": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "lcd.h": "c",
+        "image.h": "c",
+        "fonts.h": "c",
+        "delay.h": "c"
     }
 }

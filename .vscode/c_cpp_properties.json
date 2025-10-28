@@ -18,6 +18,7 @@
                 "driver/aht20",
                 "driver/lcd",
                 "driver/esp_at",
+                "driver/rtc",
                 "firmware/cmsis/core",
                 "firmware/cmsis/device",
                 "firmware/driver/inc"

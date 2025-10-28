@@ -2,6 +2,8 @@
 
 void board_lowlevel_init(void)
 {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -15,6 +17,11 @@ void board_lowlevel_init(void)
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+
+    PWR_BackupAccessCmd(ENABLE);
+    RCC_LSEConfig(RCC_LSE_ON);
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET);
+    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
 }
 
 static void usart_received(uint8_t data)
