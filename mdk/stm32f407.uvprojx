@@ -10,7 +10,7 @@
       <TargetName>demo</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -184,6 +184,8 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -324,6 +326,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
             <v6LangP>3</v6LangP>
@@ -336,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20;..\driver\lcd;..\driver\esp_at</IncludePath>
+              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20;..\driver\lcd;..\driver\esp_at;..\driver\rtc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -349,7 +352,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -419,6 +422,11 @@
               <FileName>esp_at.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\esp_at\esp_at.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\rtc\rtc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -699,9 +707,99 @@
           <GroupName>images</GroupName>
           <Files>
             <File>
-              <FileName>iamge_mingrixiang.c</FileName>
+              <FileName>error_image.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driver\lcd\image\iamge_mingrixiang.c</FilePath>
+              <FilePath>..\driver\lcd\image\error_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>mingrixiang_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\image\mingrixiang_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifi_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\image\wifi_image.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>pages</GroupName>
+          <Files>
+            <File>
+              <FileName>error_page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\pages\error_page.c</FilePath>
+            </File>
+            <File>
+              <FileName>main_page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\pages\main_page.c</FilePath>
+            </File>
+            <File>
+              <FileName>welocme_page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\pages\welocme_page.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifi_page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\pages\wifi_page.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>icons</GroupName>
+          <Files>
+            <File>
+              <FileName>icon_cloudy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_cloudy.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_leizhenyu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_leizhenyu.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_moon.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_moon.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_na.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_na.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_rain.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_rain.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_snow.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_snow.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_sunny.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_sunny.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_wenduji.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_wenduji.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_wifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_wifi.c</FilePath>
+            </File>
+            <File>
+              <FileName>icon_yintian.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\lcd\icons\icon_yintian.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -714,5 +812,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>stm32f407</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

@@ -1,7 +1,7 @@
 .\objects\delay.o: ..\driver\tim\delay.c
 .\objects\delay.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\delay.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\delay.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\delay.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\delay.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\delay.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\delay.o: ..\firmware\cmsis\core\core_cmSimd.h

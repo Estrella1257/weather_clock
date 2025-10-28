@@ -2,7 +2,7 @@
 .\objects\stm32f4xx_hash.o: ..\firmware\driver\inc\stm32f4xx_hash.h
 .\objects\stm32f4xx_hash.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\stm32f4xx_hash.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\stm32f4xx_hash.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\stm32f4xx_hash.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\stm32f4xx_hash.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\stm32f4xx_hash.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\stm32f4xx_hash.o: ..\firmware\cmsis\core\core_cmSimd.h

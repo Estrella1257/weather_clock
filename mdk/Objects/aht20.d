@@ -1,7 +1,7 @@
 .\objects\aht20.o: ..\driver\aht20\aht20.c
 .\objects\aht20.o: ..\driver\aht20\aht20.h
-.\objects\aht20.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\aht20.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\aht20.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\aht20.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\aht20.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\aht20.o: ..\firmware\cmsis\core\core_cm4.h
 .\objects\aht20.o: ..\firmware\cmsis\core\core_cmInstr.h

@@ -1,8 +1,8 @@
 .\objects\lcd.o: ..\driver\lcd\lcd.c
 .\objects\lcd.o: ..\driver\lcd\lcd.h
-.\objects\lcd.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\lcd.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\lcd.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\lcd.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lcd.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\lcd.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\lcd.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\lcd.o: ..\firmware\cmsis\core\core_cm4.h
 .\objects\lcd.o: ..\firmware\cmsis\core\core_cmInstr.h

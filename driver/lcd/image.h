@@ -11,6 +11,17 @@ typedef struct
 } image_t;
 
 extern const image_t img_mingrixiang;
-
+extern const image_t img_error;
+extern const image_t img_wifi;
+extern const image_t img_icon_cloudy;
+extern const image_t img_icon_leizhenyu;
+extern const image_t img_icon_moon;
+extern const image_t img_icon_na;
+extern const image_t img_icon_rain;
+extern const image_t img_icon_snow;
+extern const image_t img_icon_sunny;
+extern const image_t img_icon_yintian;
+extern const image_t img_icon_wifi;
+extern const image_t img_icon_wenduji;
 
 #endif

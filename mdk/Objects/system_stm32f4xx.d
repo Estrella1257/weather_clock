@@ -1,7 +1,7 @@
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\device\system_stm32f4xx.c
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\system_stm32f4xx.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_stm32f4xx.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\system_stm32f4xx.o: ..\firmware\cmsis\core\core_cmSimd.h

@@ -2,7 +2,7 @@
 .\objects\stm32f4xx_pwr.o: ..\firmware\driver\inc\stm32f4xx_pwr.h
 .\objects\stm32f4xx_pwr.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\stm32f4xx_pwr.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\stm32f4xx_pwr.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\stm32f4xx_pwr.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\stm32f4xx_pwr.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\stm32f4xx_pwr.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\stm32f4xx_pwr.o: ..\firmware\cmsis\core\core_cmSimd.h

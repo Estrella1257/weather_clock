@@ -2,7 +2,7 @@
 .\objects\esp_at.o: ..\driver\esp_at\esp_at.h
 .\objects\esp_at.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\esp_at.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\esp_at.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\esp_at.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\esp_at.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\esp_at.o: ..\firmware\cmsis\core\core_cmSimd.h
@@ -35,8 +35,8 @@
 .\objects\esp_at.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\esp_at.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\esp_at.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\esp_at.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\esp_at.o: G:\keil 5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\esp_at.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\esp_at.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\esp_at.o: ..\driver\tim\delay.h

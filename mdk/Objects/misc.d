@@ -2,7 +2,7 @@
 .\objects\misc.o: ..\firmware\driver\inc\misc.h
 .\objects\misc.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\misc.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\misc.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\misc.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\misc.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\misc.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\misc.o: ..\firmware\cmsis\core\core_cmSimd.h

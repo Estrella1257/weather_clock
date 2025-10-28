@@ -2,7 +2,7 @@
 .\objects\usart.o: ..\driver\usart\usart.h
 .\objects\usart.o: ..\firmware\cmsis\device\stm32f4xx.h
 .\objects\usart.o: ..\firmware\cmsis\core\core_cm4.h
-.\objects\usart.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\usart.o: ..\firmware\cmsis\core\core_cmInstr.h
 .\objects\usart.o: ..\firmware\cmsis\core\core_cmFunc.h
 .\objects\usart.o: ..\firmware\cmsis\core\core_cmSimd.h
@@ -35,5 +35,5 @@
 .\objects\usart.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\usart.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\usart.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\usart.o: G:\keil 5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\usart.o: G:\keil 5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
