@@ -18,5 +18,5 @@ void wifi_page_display(void)
     lcd_show_image(30, 25, &img_wifi);
     lcd_show_string(88, 200, "WiFi", &font32_maple, 1, GREEN, BLACK);
     lcd_show_string(start_x, 240, ssid, &font32_maple, 1, WHITE, BLACK);
-    lcd_show_string(72,280,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...", &font32_maple, 1,YELLOW, BLACK);
+    lcd_show_string(72,280,"Á¬½ÓÖÐ...", &font32_maple, 1,YELLOW, BLACK);
 }

@@ -22,7 +22,7 @@ void main_page_display(void)
     // 顶部信息区域（白底）
     do
     {
-        lcd_fill(15,15,224,154,WHITE);
+        lcd_fill(15, 15, 209, 139,WHITE);
 
         lcd_show_image(23, 20, &img_icon_wifi);
 
@@ -43,7 +43,7 @@ void main_page_display(void)
     // 左下室内环境信息区域（青色背景）
     do 
     {
-        lcd_fill(15,165,114,304,TEAL);
+        lcd_fill(15, 165, 99, 139,TEAL);
 
         lcd_show_string(25, 170, "室内环境", &font20_maple, 1, BLACK, WHITE);
 
@@ -55,7 +55,7 @@ void main_page_display(void)
     // 右下室外信息区域（橙色背景）
     do
     {
-        lcd_fill(125,165,224,304,RGB565(253, 135, 75));
+        lcd_fill(125, 165, 99, 139,RGB565(253, 135, 75));
 
         // 绘制城市名
         main_page_redraw_outdoor_city("湛江");
@@ -75,7 +75,7 @@ void main_page_display(void)
  */
 void main_page_redraw_wifi_ssid(const char *ssid)
 {
-    lcd_fill(50, 23, 200, 43, WHITE);
+    lcd_fill(50, 23, 150, 20, WHITE);
 
     // 缓冲区大小 15 字节（包括结尾 '\0'）
     // 我们用 snprintf(str,15,"%14s", ssid) 将 SSID 限制到最多 14 个字符，保证不溢出
@@ -92,7 +92,7 @@ void main_page_redraw_wifi_ssid(const char *ssid)
  */
 void main_page_redraw_time(rtc_datetime_t *time)
 {
-    lcd_fill(25, 42, 215, 118, WHITE);
+    lcd_fill(25, 42, 190, 76, WHITE);
 
     // 缓冲区 6 字节：HH:MM + '\0' 需要 6 字节（例如 "08:05\0"）
     char str[6];
@@ -109,7 +109,7 @@ void main_page_redraw_time(rtc_datetime_t *time)
  */
 void main_page_redraw_date(rtc_datetime_t *date)
 {
-    lcd_fill(35, 121, 55, 141, WHITE);
+    lcd_fill(35, 121, 20, 20, WHITE);
 
     // 缓冲区 18 字节（包括 '\0'）：
     // 例如 "2025/10/27 星期一" 长度为 4+1+2+1+2+1+3 = 14（不同语言环境可能略有差别），18 是安全的
@@ -138,7 +138,7 @@ void main_page_redraw_date(rtc_datetime_t *date)
  */
 void main_page_redraw_inner_tempreature(float tempreature)
 {
-    lcd_fill(30, 195, 100, 249, TEAL);
+    lcd_fill(30, 195, 70, 54, TEAL);
 
     // 字符串缓冲区 3 字节，用于存放两位数 + '\0'，例如 "23\0"
     // 初始化为 {'-','-'}，字符串末尾自动被下一行 snprintf 写入 '\0'（但这里手动初始化未包含 '\0' —— 实际 C 规定静态初始化会在尾部补0）
@@ -160,7 +160,7 @@ void main_page_redraw_inner_tempreature(float tempreature)
  */
 void main_page_redraw_inner_humidity(float humiduty)
 {
-    lcd_fill(28, 239, 110, 301, TEAL);
+    lcd_fill(28, 239, 82, 62, TEAL);
 
     // 缓冲区 3 字节足够显示两位整数和终止符
     char str[3];
@@ -170,9 +170,9 @@ void main_page_redraw_inner_humidity(float humiduty)
     if(humiduty > 0.0f && humiduty <= 99.99f)
         snprintf(str, sizeof(str), "%2.0f", humiduty);
 
-    lcd_show_string(28, 239, str, &font62_maple,1, BLACK, TEAL);
+    lcd_show_string(28, 239, str, &font62_maple, 1, BLACK, TEAL);
 
-    lcd_show_string(91, 262, "%", &font32_maple,1, BLACK, WHITE);    
+    lcd_show_string(91, 262, "%", &font32_maple, 1, BLACK, WHITE);    
 }
 
 /**
@@ -197,7 +197,7 @@ void main_page_redraw_outdoor_city(const char *city)
  */
 void main_page_redraw_outdoor_tempreature(float tempreature)
 {
-    lcd_fill(135, 186, 189, 240, RGB565(253, 135, 75));
+    lcd_fill(135, 186, 54, 54, RGB565(253, 135, 75));
 
     // 数值缓冲区，默认显示为 "--"
     char str[3] = {'-','-'};
