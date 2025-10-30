@@ -8,6 +8,7 @@
 #include "aht20.h"
 #include "lcd.h"
 #include "esp_at.h"
+#include "rtc.h"
 
 void board_lowlevel_init(void);
 void board_init(void);

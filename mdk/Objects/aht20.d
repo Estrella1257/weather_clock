@@ -37,3 +37,4 @@
 .\objects\aht20.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\aht20.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\aht20.o: ..\driver\tim\delay.h
+.\objects\aht20.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h

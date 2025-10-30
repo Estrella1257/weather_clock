@@ -70,7 +70,7 @@ static void esp_at_nvic_init(void)
     NVIC_InitTypeDef NVIC_InitStruct;
     memset(&NVIC_InitStruct, 0, sizeof(NVIC_InitStruct));
     NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
-    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 5;
+    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 1;
     NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStruct);
@@ -275,12 +275,12 @@ static bool esp_at_write_command(const char *command, uint32_t timeout_ms)
         }
         delay_ms(5);
         elapsed += 5;
+    }
 
 #if ESP_AT_DEBUG
     printf("AT cmd timeout: %s\n", command);
 #endif
     return false;
-    }
 }
 
 //返回指向全局 rxbuf 的只读字符串（注意：缓冲会被后续命令覆盖）

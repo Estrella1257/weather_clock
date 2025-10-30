@@ -40,3 +40,4 @@
 .\objects\lcd.o: ..\driver\lcd\fonts.h
 .\objects\lcd.o: ..\driver\lcd\image.h
 .\objects\lcd.o: ..\driver\tim\delay.h
+.\objects\lcd.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h

@@ -6,6 +6,12 @@ lcd_dev_t lcddev;
 uint16_t POINT_COLOR = 0x0000; // 画笔颜色
 uint16_t BACK_COLOR = 0xFFFF;  // 背景颜色
 
+//延时i
+static void opt_delay(u8 i)
+{
+    while(i--);
+}
+
 //基本寄存器读写
 // 写寄存器编号（告诉 LCD 下一步要对哪个寄存器操作）
 static void lcd_write_regaddress(vu16 regaddress)
@@ -40,7 +46,7 @@ void lcd_write_register(vu16 regaddress, vu16 data)
 u16 lcd_read_register(vu16 regaddress)
 {
     lcd_write_regaddress(regaddress);     // 写入寄存器地址
-    delay_us(5);
+    opt_delay(5);
     return lcd_read_data();             // 读寄存器值
 }
 
@@ -189,10 +195,7 @@ void lcd_init(void)
     FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
 	FSMC_NORSRAMTimingInitTypeDef  readWriteTiming; 
     FSMC_NORSRAMTimingInitTypeDef  writeTiming;
-    
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB|RCC_AHB1Periph_GPIOD|RCC_AHB1Periph_GPIOE, ENABLE);//使能IO时钟  
-	RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FSMC,ENABLE);//使能FSMC时钟  
-    
+
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1; //PB1 推挽输出,控制背光
  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; //普通输出模式
  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽输出
@@ -430,7 +433,7 @@ void lcd_fill(u16 sx, u16 sy, u16 width, u16 height, u16 color)
 {          
     u16 i, j;
 
-    for(i = sy; i < height; i++)                 // 共写 height 行
+    for(i = sy; i < height + sy; i++)                 // 共写 height 行
     {
         lcd_set_cursor(sx, i);              // 设置光标位置（逐行移动）
         lcd_write_ram_prepare();                // 开始写入 GRAM      

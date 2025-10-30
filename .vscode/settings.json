@@ -11,6 +11,8 @@
         "lcd.h": "c",
         "image.h": "c",
         "fonts.h": "c",
-        "delay.h": "c"
+        "delay.h": "c",
+        "weather.h": "c",
+        "app.h": "c"
     }
 }

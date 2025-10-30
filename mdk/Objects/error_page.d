@@ -40,4 +40,5 @@
 .\objects\error_page.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\error_page.o: ..\driver\lcd\fonts.h
 .\objects\error_page.o: ..\driver\tim\delay.h
+.\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h

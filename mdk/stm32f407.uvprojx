@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20;..\driver\lcd;..\driver\esp_at;..\driver\rtc</IncludePath>
+              <IncludePath>..\app\include;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\driver\usart;..\driver\tim;..\driver\aht20;..\driver\lcd;..\driver\esp_at;..\driver\rtc;..\driver\weather</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -393,6 +393,16 @@
               <FileType>1</FileType>
               <FilePath>..\app\board.c</FilePath>
             </File>
+            <File>
+              <FileName>app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\app.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\wifi.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -427,6 +437,11 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\rtc\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>weather.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\weather\weather.c</FilePath>
             </File>
           </Files>
         </Group>

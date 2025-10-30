@@ -19,6 +19,7 @@
                 "driver/lcd",
                 "driver/esp_at",
                 "driver/rtc",
+                "driver/weather",
                 "firmware/cmsis/core",
                 "firmware/cmsis/device",
                 "firmware/driver/inc"

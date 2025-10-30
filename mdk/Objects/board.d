@@ -38,6 +38,7 @@
 .\objects\board.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\board.o: ..\driver\usart\usart.h
 .\objects\board.o: ..\driver\tim\delay.h
+.\objects\board.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\board.o: ..\driver\aht20\aht20.h
 .\objects\board.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\board.o: ..\driver\lcd\lcd.h
@@ -46,4 +47,4 @@
 .\objects\board.o: ..\driver\lcd\image.h
 .\objects\board.o: ..\driver\esp_at\esp_at.h
 .\objects\board.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\board.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\board.o: ..\driver\rtc\rtc.h

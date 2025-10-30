@@ -63,7 +63,7 @@ static void usart_nvic_init(void)
     NVIC_InitTypeDef NVIC_InitStructure;
     memset(&NVIC_InitStructure, 0, sizeof(NVIC_InitTypeDef));
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);

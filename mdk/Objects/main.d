@@ -39,6 +39,7 @@
 .\objects\main.o: ..\app\include\board.h
 .\objects\main.o: ..\driver\usart\usart.h
 .\objects\main.o: ..\driver\tim\delay.h
+.\objects\main.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: ..\driver\aht20\aht20.h
 .\objects\main.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\main.o: ..\driver\lcd\lcd.h
@@ -47,6 +48,6 @@
 .\objects\main.o: ..\driver\lcd\image.h
 .\objects\main.o: ..\driver\esp_at\esp_at.h
 .\objects\main.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\main.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\main.o: ..\app\include\pages.h
 .\objects\main.o: ..\driver\rtc\rtc.h
+.\objects\main.o: ..\app\include\app.h
+.\objects\main.o: ..\app\include\pages.h

@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include "stm32f4xx.h"
 #include "main.h"
+#include "app.h"
 #include "pages.h"
 
-void main(void)
+int main(void)
 {
 	board_lowlevel_init();
 	board_init();
 
 	welcome_page_display();
-	delay_ms(1000);
-	wifi_page_display();
-	delay_ms(1000);
-	main_page_display();
-	delay_ms(1000);
-	error_page_display("wifi init failed!");
 
-	while(1)
+	wifi_init();
+	wifi_page_display();
+	wifi_wait_connected();
+
+	main_loop_init();
+	main_page_display();
+
+	while (1)
 	{
-		
+		main_loop();
 	}
+	
 }
