@@ -1,7 +1,10 @@
 #include "usart.h"
 #include <stdio.h>
 #include <string.h>
+#include "FreeRTOS.h"
+#include "semphr.h"
 
+static SemaphoreHandle_t write_async_semaphore;
 static usart_receive_callback_t receive_callback = NULL;
 
 static void usart_gpio_init(void)
@@ -78,6 +81,9 @@ static void usart_nvic_init(void)
 
 void usart_init(void)
 {
+    write_async_semaphore = xSemaphoreCreateBinary();
+    configASSERT(write_async_semaphore);
+
     usart_gpio_init();
     usart_dma_init();
     usart_usart_init();
@@ -102,6 +108,8 @@ void usart_send_data(const char *data)
     DMA2_Stream7->NDTR = len; // 设置要传输的数据数量
 
     DMA_Cmd(DMA2_Stream7, ENABLE); // 使能DMA Stream开始传输
+
+    xSemaphoreTake(write_async_semaphore, portMAX_DELAY);
 
     while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET); 
     USART_ClearFlag(USART1, USART_FLAG_TC);
@@ -139,6 +147,10 @@ void DMA2_Stream7_IRQHandler(void)
 {
     if (DMA_GetITStatus(DMA2_Stream7, DMA_IT_TCIF7) != RESET) // 检查DMA2 Stream7的传输完成中断标志是否置位
     {
+        BaseType_t pxHigherPriorityTaskWoken;
+        xSemaphoreGiveFromISR(write_async_semaphore, &pxHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
+
         DMA_ClearITPendingBit(DMA2_Stream7, DMA_IT_TCIF7); // 清除传输完成中断标志位
     }
 }

@@ -1,10 +1,14 @@
 #include "esp_at.h"
-#include "delay.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
 #define ESP_AT_DEBUG 0        // 用于开启/关闭调试打印（0 关闭，1 开启）
 #define USE_DMA_SEND 1        // 是否使用 DMA 发送（1 使用 DMA，0 使用轮询发送）
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))     // 计算数组元素个数的通用宏
+
+static SemaphoreHandle_t at_ack_semaphore = NULL;
 
 /* 接收到 ESP AT 固定响应后，用枚举表示类型，便于后续逻辑判断 */
 typedef enum
@@ -113,7 +117,7 @@ static bool esp_at_wait_boot(uint32_t timeout)
     {
         if(esp_at_write_command("AT", 100))
             return true;
-        delay_ms(100);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
     return false;
 }
@@ -121,6 +125,9 @@ static bool esp_at_wait_boot(uint32_t timeout)
 //上层初始化函数：调用底层初始化并执行基础的 AT 检查与复位、存储配置等 
 bool esp_at_init(void)
 {
+    at_ack_semaphore = xSemaphoreCreateBinary();
+    configASSERT(at_ack_semaphore);
+
     esp_at_lowlevel_init();
 
     if (!esp_at_wait_boot(3000))        // 等待最初的 AT 响应
@@ -157,7 +164,7 @@ static char rxbuf[1024];        //全局接收缓冲区，保存自上次命令�
 static char rxlinebuf[256];     //用于按行解析（检测换行 '\n' 时判断一行结束）
 static size_t rxlen = 0;        //当前长度索引，rxline_idx: rxlinebuf 当前索引
 static size_t rxline_idx = 0; 
-static volatile bool at_ack_flag = false;        //“中断侧通知主循环/写命令等待”的标志位 
+//static volatile bool at_ack_flag = false;        //“中断侧通知主循环/写命令等待”的标志位 
 static esp_at_ack_t rxack = ESP_AT_ACK_NONE;         //最近匹配到的 ACK 类型（OK/ERROR/BUSY/READY）
 
 //接收解析函数（每收到一个字节调用）
@@ -184,17 +191,35 @@ static void esp_at_receive_parser(uint8_t data)
         receive_callback(data);
     }
 
-    //当遇到换行符时，尝试匹配行内的 ACK（OK/ERROR 等），匹配到则置标志并保存类型
-    if (data == '\n')
+    // //当遇到换行符时，尝试匹配行内的 ACK（OK/ERROR 等），匹配到则置标志并保存类型
+    // if (data == '\n')
+    // {
+    //     esp_at_ack_t ack = match_internal_ack(rxlinebuf);
+    //     if (ack != ESP_AT_ACK_NONE)
+    //     {
+    //         rxack = ack;
+    //         at_ack_flag = true;
+    //     }
+        
+    //     //清空行缓冲，准备下一行
+    //     rxline_idx = 0;
+    //     rxlinebuf[0] = '\0';
+    // }
+
+        if (data == '\n')
     {
         esp_at_ack_t ack = match_internal_ack(rxlinebuf);
         if (ack != ESP_AT_ACK_NONE)
         {
             rxack = ack;
-            at_ack_flag = true;
+            BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+            if (at_ack_semaphore)
+            {
+                xSemaphoreGiveFromISR(at_ack_semaphore, &xHigherPriorityTaskWoken);
+                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
         }
         
-        //清空行缓冲，准备下一行
         rxline_idx = 0;
         rxlinebuf[0] = '\0';
     }
@@ -255,32 +280,89 @@ static bool esp_at_write_command(const char *command, uint32_t timeout_ms)
     esp_at_write_bytes(command);
 #endif
 
-    uint32_t elapsed = 0;
-    while (elapsed < timeout_ms)
-    {
-        if (at_ack_flag)
-        {
-            //收到标志：根据 rxack 判断结果
-            if (rxack == ESP_AT_ACK_OK || rxack == ESP_AT_ACK_READY)
-                return true;
-            else if (rxack == ESP_AT_ACK_ERROR)
-                return false;
-            else if (rxack == ESP_AT_ACK_BUSY)
-            {
-                //BUSY：清标志、短延时后重试发送
-                at_ack_flag = false;
-                delay_ms(50);
-                esp_at_usart_write(cmd_buf);
-            }
-        }
-        delay_ms(5);
-        elapsed += 5;
-    }
+    // uint32_t elapsed = 0;
+    // while (elapsed < timeout_ms)
+    // {
+    //     if (at_ack_flag)
+    //     {
+    //         //收到标志：根据 rxack 判断结果
+    //         if (rxack == ESP_AT_ACK_OK || rxack == ESP_AT_ACK_READY)
+    //             return true;
+    //         else if (rxack == ESP_AT_ACK_ERROR)
+    //             return false;
+    //         else if (rxack == ESP_AT_ACK_BUSY)
+    //         {
+    //             //BUSY：清标志、短延时后重试发送
+    //             at_ack_flag = false;
+    //             delay_ms(50);
+    //             esp_at_usart_write(cmd_buf);
+    //         }
+    //     }
+    //     delay_ms(5);
+    //     elapsed += 5;
+    // }
 
+// #if ESP_AT_DEBUG
+//     printf("AT cmd timeout: %s\n", command);
+// #endif
+//     return false;
+
+    TickType_t start = xTaskGetTickCount();
+    TickType_t timeout_ticks = pdMS_TO_TICKS(timeout_ms);
+
+    while (1)
+    {
+        bool signaled = xSemaphoreTake(at_ack_semaphore, timeout_ticks) == pdPASS;
+        if (!signaled)
+        {
 #if ESP_AT_DEBUG
-    printf("AT cmd timeout: %s\n", command);
+            printf("[DEBUG] Response timeout (cmd=%s)\n", command);
 #endif
-    return false;
+            return false;
+        }
+
+        if (rxack == ESP_AT_ACK_OK || rxack == ESP_AT_ACK_READY)
+        {
+#if ESP_AT_DEBUG
+            printf("[DEBUG] Response: %s\n", rxbuf);
+#endif
+            return true;
+        }
+        else if (rxack == ESP_AT_ACK_ERROR)
+        {
+#if ESP_AT_DEBUG
+            printf("[DEBUG] Response (ERROR): %s\n", rxbuf);
+#endif
+            return false;
+        }
+        else if (rxack == ESP_AT_ACK_BUSY)
+        {
+#if ESP_AT_DEBUG
+            printf("[DEBUG] Response BUSY, retrying...\n");
+#endif
+            rxack = ESP_AT_ACK_NONE;
+            vTaskDelay(pdMS_TO_TICKS(50));
+#if USE_DMA_SEND
+            int l2 = snprintf(cmd_buf, sizeof(cmd_buf), "%s\r\n", command);
+            if (l2 > 0)
+                esp_at_usart_write(cmd_buf);
+#else
+            esp_at_write_bytes(command);
+#endif
+            TickType_t now = xTaskGetTickCount();
+            if ((now - start) * portTICK_PERIOD_MS > timeout_ms)
+                return false;
+            timeout_ticks = pdMS_TO_TICKS(timeout_ms - ((now - start) * portTICK_PERIOD_MS));
+            continue;
+        }
+        else
+        {
+            TickType_t now = xTaskGetTickCount();
+            if ((now - start) * portTICK_PERIOD_MS > timeout_ms)
+                return false;
+            timeout_ticks = pdMS_TO_TICKS(timeout_ms - ((now - start) * portTICK_PERIOD_MS));
+        }
+    }
 }
 
 //返回指向全局 rxbuf 的只读字符串（注意：缓冲会被后续命令覆盖）
@@ -465,7 +547,7 @@ const char *esp_at_http_get(const char *url)
     snprintf(txbuf, sizeof(txbuf), "AT+HTTPCLIENT=2,1,\"%s\",,,2", url);
     bool ret = esp_at_write_command(txbuf, 7000);
     if (ret) {
-        delay_ms(100);      // 额外短延时，确保模块把 HTTP 数据发送完毕并进入 rxbuf
+        vTaskDelay(pdMS_TO_TICKS(100));      // 额外短延时，确保模块把 HTTP 数据发送完毕并进入 rxbuf
         return esp_at_get_response();       // 返回 rxbuf（包含 +HTTPCLIENT:... 的 JSON 数据）
     }
     return NULL;

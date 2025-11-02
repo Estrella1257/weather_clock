@@ -4,7 +4,11 @@
 #include "main.h"
 #include "app.h"
 #include "pages.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
 #include "esp_at.h"
+#include "aht20.h"
 #include "weather.h"
 
 //时间单位宏定义，方便后续设置延时
@@ -28,113 +32,142 @@ static volatile uint32_t time_update_delay = 0;   // 时间显示更新延时
 static volatile uint32_t inner_update_delay = 0;  // 内部温湿度更新延时
 static volatile uint32_t outdoor_update_delay = 0;// 户外天气更新延时
 
-// 定时器周期回调函数，每 1ms 调用一次
-// 用于减少各任务延时计数器
-static void tim_periodic_callback(void)
-{
-	if(time_sync_delay > 0)
-		time_sync_delay--;
-	if(wifi_update_delay > 0)
-		wifi_update_delay--;
-	if(time_update_delay > 0)
-		time_update_delay--;
-	if(inner_update_delay > 0)
-		inner_update_delay--;
-	if(outdoor_update_delay > 0)
-		outdoor_update_delay--;
-}
+// // 定时器周期回调函数，每 1ms 调用一次
+// // 用于减少各任务延时计数器
+// static void tim_periodic_callback(void)
+// {
+// 	if(time_sync_delay > 0)
+// 		time_sync_delay--;
+// 	if(wifi_update_delay > 0)
+// 		wifi_update_delay--;
+// 	if(time_update_delay > 0)
+// 		time_update_delay--;
+// 	if(inner_update_delay > 0)
+// 		inner_update_delay--;
+// 	if(outdoor_update_delay > 0)
+// 		outdoor_update_delay--;
+// }
+
+#define LOOP_EVT_TIME_SYNC         (1 << 0)
+#define LOOP_EVT_WIFI_UPDATE       (1 << 1)
+#define LOOP_EVT_TIME_UPDATE       (1 << 2)
+#define LOOP_EVT_INNER_UPDATE      (1 << 3)
+#define LOOP_EVT_OUTDOOR_UPDATE    (1 << 4)
+#define LOOP_EVT_ALL               (LOOP_EVT_TIME_SYNC     | \
+                                    LOOP_EVT_WIFI_UPDATE   | \
+                                    LOOP_EVT_TIME_UPDATE   | \
+                                    LOOP_EVT_INNER_UPDATE  | \
+                                    LOOP_EVT_OUTDOOR_UPDATE)
+
+static TaskHandle_t loop_task;
+static TimerHandle_t time_sync_timer;
+static TimerHandle_t wifi_update_timer;
+static TimerHandle_t time_update_timer;
+static TimerHandle_t inner_update_timer;
+static TimerHandle_t outdoor_update_timer;
 
 // 网络时间同步函数
 // 使用 ESP8266 AT 指令获取 SNTP 时间
 static void time_sync(void)
 {
-	if(time_sync_delay > 0)      // 延时未到，直接返回
-		return;
-	
-	time_sync_delay = TIME_SYNC_INTERVAL;      // 重置延时计数器
+    uint32_t restart_sync_delay = SECONDS(5); // 失败后每5秒重试，成功后改为 TIME_SYNC_INTERVAL
 
-	esp_at_datetime_t esp_date = { 0 };        // 用于保存 SNTP 时间结构体
-	if(!esp_at_sntp_get_time(&esp_date))       // 获取时间失败
-	{
-		printf("[SNTP] get time failed\n");
-		time_sync_delay = SECONDS(5);           // 5秒后重试
-		return;
-	}
+    rtc_datetime_t rtc_date = { 0 };
+    esp_at_datetime_t esp_date = { 0 };
 
-	if(esp_date.year < 2000)        // 获取到的时间不合法
-	{
-		printf("[SNTP] invalid date formate\n");
-		time_sync_delay = SECONDS(5);
-		return;
-	}
+    // 先检查当前 WIFI 是否连上（避免太早请求 SNTP）
+    esp_at_wifi_info_t wifi_info = { 0 };
+    if (!esp_at_get_wifi_info(&wifi_info) || !wifi_info.connected)
+    {
+        printf("[SNTP] wifi not connected yet, will retry in %u s\n", restart_sync_delay / 1000);
+        // 以定时器方式重试（不立刻通知）
+        xTimerChangePeriod(time_sync_timer, pdMS_TO_TICKS(restart_sync_delay), 0);
+        return;
+    }
 
-	printf("[SNTP] sync time:%4u-%02u-%02u %02u:%02u:%02u (%d)\n",
-		esp_date.year,esp_date.month,esp_date.day,esp_date.hour,esp_date.minute,esp_date.second,esp_date.weekday);
-	
-	// 将 SNTP 时间写入 RTC
-	rtc_datetime_t rtc_date = { 0 };
-	rtc_date.year = esp_date.year;
-	rtc_date.month = esp_date.month;
-	rtc_date.day = esp_date.day;
-	rtc_date.hour = esp_date.hour;
-	rtc_date.minute = esp_date.minute;
-	rtc_date.second = esp_date.second;
-	rtc_date.weekday = esp_date.weekday;
-	rtc_set_time(&rtc_date);         
-	
-	time_update_delay = 10;           // 同步时间后立即更新显示
+    // 请求 SNTP 时间
+    if (!esp_at_sntp_get_time(&esp_date))
+    {
+        printf("[SNTP] get time failed, retry in %u s\n", restart_sync_delay / 1000);
+        xTimerChangePeriod(time_sync_timer, pdMS_TO_TICKS(restart_sync_delay), 0);
+        return;
+    }
+
+    if (esp_date.year <= 2000)
+    {
+        printf("[SNTP] invalid date format (year=%u), retry in %u s\n", esp_date.year, restart_sync_delay / 1000);
+        xTimerChangePeriod(time_sync_timer, pdMS_TO_TICKS(restart_sync_delay), 0);
+        return;
+    }
+
+    // 成功 —— 设置 RTC，并把下一次同步设为正常间隔
+    printf("[SNTP] sync time:%4u-%02u-%02u %02u:%02u:%02u (%d)\n",
+           esp_date.year, esp_date.month, esp_date.day,
+           esp_date.hour, esp_date.minute, esp_date.second, esp_date.weekday);
+
+    rtc_date.year = esp_date.year;
+    rtc_date.month = esp_date.month;
+    rtc_date.day = esp_date.day;
+    rtc_date.hour = esp_date.hour;
+    rtc_date.minute = esp_date.minute;
+    rtc_date.second = esp_date.second;
+    rtc_date.weekday = esp_date.weekday;
+    rtc_set_time(&rtc_date);
+
+    // 成功后把定时器周期恢复为正常的每小时同步
+    xTimerChangePeriod(time_sync_timer, pdMS_TO_TICKS(TIME_SYNC_INTERVAL), 0);
 }
 
 //WiFi 状态刷新函数
 static void wifi_update(void)
 {
-	static esp_at_wifi_info_t last_info = { 0 };     // 上一次 WiFi 信息，方便比较是否变化
+    static esp_at_wifi_info_t last_info = { 0 };
 
-	if(wifi_update_delay > 0)
-		return;
-	
-	wifi_update_delay = WIFI_UPDATE_INTERVAL;
+    xTimerChangePeriod(wifi_update_timer, pdMS_TO_TICKS(WIFI_UPDATE_INTERVAL), 0);
 
-	esp_at_wifi_info_t info = { 0 };       // 当前 WiFi 信息
-	if(!esp_at_get_wifi_info(&info))      
-	{
-		printf("[AT] wifi info get failed\n"); 
-		main_page_redraw_wifi_ssid("wifi lost");     // 显示丢失状态
-		last_info.connected = 0;                     // 标记未连接     
-		return;
-	}
+    esp_at_wifi_info_t info = { 0 };
+    if(!esp_at_get_wifi_info(&info))
+    {
+        printf("[AT] wifi info get failed\n");
+        main_page_redraw_wifi_ssid("wifi lost");     // 显示丢失状态
+        last_info.connected = 0;                    // 标记未连接
+        return;
+    }
 
-	// WiFi 已连接
-	if(info.connected)
-	{
-		// 连接状态或信息变化才刷新显示
-		if(last_info.connected != info.connected || memcmp(&info, &last_info, sizeof(info)) != 0)
-		{
-			main_page_redraw_wifi_ssid(info.ssid);      // 更新页面显示 SSID
-		}
-	}
-	else
-	{
-		main_page_redraw_wifi_ssid("wifi lost");   
-	}
+    if(info.connected)
+    {
+        // 当从未连接 -> 已连接时，立即触发一次 SNTP（但 SNTP 函数内部也会再验证 wifi）
+        if(last_info.connected == 0)
+        {
+            printf("[WiFi] Connected, trigger SNTP sync\n");
+            // 直接启动一次 time_sync_timer，让 time_sync 在定时器回调执行（避免直接在本函数中做网络延时操作）
+            xTimerChangePeriod(time_sync_timer, pdMS_TO_TICKS(1), 0); // 1 ms 后触发一次立即尝试
+        }
+
+        if(last_info.connected != info.connected || memcmp(&info, &last_info, sizeof(info)) != 0)
+        {
+            main_page_redraw_wifi_ssid(info.ssid);     // 更新页面显示 SSID
+        }
+    }
+    else
+    {
+        main_page_redraw_wifi_ssid("wifi lost");
+    }
 
 	// 保存当前 WiFi 信息供下一次比较
-	memcpy(&last_info,&info,sizeof(esp_at_wifi_info_t));
+    memcpy(&last_info,&info,sizeof(esp_at_wifi_info_t));
 }
 
 // RTC 时间更新函数
 static void time_update(void)
 {
-	static rtc_datetime_t last_date = { 0 };      // 上一次时间显示
+	static rtc_datetime_t last_date = { 0 };        // 上一次时间显示
 
-	if(time_update_delay > 0)
-	return;
-	
-	time_update_delay = TIME_UPDATE_INTERVAL;
+	xTimerChangePeriod(time_update_timer, pdMS_TO_TICKS(TIME_UPDATE_INTERVAL), 0);
 
 	rtc_datetime_t date;
-	rtc_get_time(&date);         // 读取 RTC 时间
-    
+	rtc_get_time(&date);       // 读取 RTC 时间
+
 	// 时间（时分秒）变化才刷新显示
 	if(last_date.hour != date.hour || last_date.minute != date.minute || last_date.second != date.second)
 	{
@@ -156,10 +189,7 @@ static void inner_update(void)
 {
 	static float last_temperature, last_humidity;
 
-	if(inner_update_delay > 0)
-		return;
-	
-	inner_update_delay = INNER_UPDATE_INTERVAL;
+	xTimerChangePeriod(inner_update_timer, pdMS_TO_TICKS(INNER_UPDATE_INTERVAL), 0);
 
 	// 开始测量
 	if(!aht20_start_measurement())
@@ -202,12 +232,12 @@ static void inner_update(void)
 // 户外天气信息更新函数
 static void outdoor_update(void)
 {
-	static weather_info_t last_weather = { 0 };        // 上一次天气信息
-	
-	if(outdoor_update_delay > 0)	
-		return;
+	static weather_info_t last_weather = { 0 };
 
-	outdoor_update_delay = OUTDOOR_UPDATE_INTERVAL;
+	if (xTimerIsTimerActive(outdoor_update_timer) == pdFALSE) 
+	{
+        xTimerChangePeriod(outdoor_update_timer, pdMS_TO_TICKS(OUTDOOR_UPDATE_INTERVAL), 0);
+    }
 
 	weather_info_t weather = { 0 };
 
@@ -239,16 +269,57 @@ static void outdoor_update(void)
 	main_page_redraw_outdoor_weather_icon(weather.weather_code);
 }
 
-void main_loop_init(void)
+static void loop_func(void *param)
 {
-    tim_register_callback(tim_periodic_callback);
+	uint32_t event;
+
+	while(1)
+	{
+		event = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+		if(event & LOOP_EVT_TIME_SYNC)
+		{
+			time_sync();
+		}
+		if(event & LOOP_EVT_WIFI_UPDATE)
+		{
+			wifi_update();
+		}
+		if(event & LOOP_EVT_TIME_UPDATE)
+		{
+			time_update();
+		}
+		if(event & LOOP_EVT_INNER_UPDATE)
+		{
+			inner_update();
+		}
+		if(event & LOOP_EVT_OUTDOOR_UPDATE)
+		{
+			outdoor_update();
+		}
+	}
 }
 
-void main_loop(void)
+static void loop_timer_cb(TimerHandle_t timer)
 {
-    time_sync();       // 网络时间同步
-    wifi_update();     // WiFi 状态更新
-    time_update();     // 时间显示更新
-    inner_update();    // 内部温湿度更新
-    outdoor_update();  // 户外天气更新
+	uint32_t event = (uint32_t)pvTimerGetTimerID(timer);
+	xTaskNotify(loop_task, event, eSetBits);
+}
+
+void main_loop_init(void)
+{
+	time_sync_timer = xTimerCreate("time sync", 1, pdFALSE, (void *)LOOP_EVT_TIME_SYNC, loop_timer_cb);
+	wifi_update_timer = xTimerCreate("wifi update", pdMS_TO_TICKS(WIFI_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_WIFI_UPDATE, loop_timer_cb);
+	time_update_timer = xTimerCreate("time update", pdMS_TO_TICKS(TIME_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_TIME_UPDATE, loop_timer_cb);
+	inner_update_timer = xTimerCreate("inner update", pdMS_TO_TICKS(INNER_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_INNER_UPDATE, loop_timer_cb);
+	outdoor_update_timer = xTimerCreate("outdoor update", pdMS_TO_TICKS(OUTDOOR_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_OUTDOOR_UPDATE, loop_timer_cb);
+
+	xTaskCreate(loop_func, "loop", 1024, NULL, 5, &loop_task);
+
+	xTaskNotify(loop_task, LOOP_EVT_ALL, eSetBits);
+
+	xTimerStart(wifi_update_timer, 0);
+	xTimerStart(time_update_timer, 0);
+	xTimerStart(inner_update_timer, 0);
+	xTimerStart(outdoor_update_timer, 0);
 }

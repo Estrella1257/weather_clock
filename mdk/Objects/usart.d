@@ -37,3 +37,15 @@
 .\objects\usart.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
 .\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\usart.o: ..\third_lib\freertos\include\FreeRTOS.h
+.\objects\usart.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\usart.o: ..\third_lib\freertos\portable\FreeRTOSConfig.h
+.\objects\usart.o: ..\third_lib\freertos\include\projdefs.h
+.\objects\usart.o: ..\third_lib\freertos\include\portable.h
+.\objects\usart.o: ..\third_lib\freertos\include\deprecated_definitions.h
+.\objects\usart.o: ..\third_lib\freertos\portable\portmacro.h
+.\objects\usart.o: ..\third_lib\freertos\include\mpu_wrappers.h
+.\objects\usart.o: ..\third_lib\freertos\include\semphr.h
+.\objects\usart.o: ..\third_lib\freertos\include\queue.h
+.\objects\usart.o: ..\third_lib\freertos\include\task.h
+.\objects\usart.o: ..\third_lib\freertos\include\list.h

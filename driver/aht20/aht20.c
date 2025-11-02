@@ -1,6 +1,7 @@
 #include "aht20.h"
 #include "stm32f4xx.h"
-#include "delay.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 static bool aht20_write(uint8_t data[], uint32_t length);
 static bool aht20_read(uint8_t data[], uint32_t length);
@@ -33,14 +34,14 @@ bool aht20_init(void)
     I2C_Init(I2C2,&I2C_InitStructure);
     I2C_Cmd(I2C2, ENABLE);
 
-    delay_ms(40);
+    vTaskDelay(pdMS_TO_TICKS(40));
 
     if (aht20_is_ready()) return true; //检查传感器是否已准备好（是否已初始化）
     if (!aht20_write((uint8_t[]){0xBE, 0x08, 0x00},3)) return true; //若未准备，则发送初始化命令（0xBE, 0x08, 0x00）
 
     for (uint32_t t = 0; t < 100; t++) //等待传感器初始化完成
     {
-        delay_ms(1);
+        vTaskDelay(pdMS_TO_TICKS(1));
         if (aht20_is_ready()) return true;    
     }
     return false;
@@ -51,7 +52,7 @@ bool aht20_init(void)
     do { \
         uint32_t timeout = TIMEOUT; \
         while (!I2C_CheckEvent(I2C2, EVENT) && timeout > 0) { \
-            delay_ms(10); \
+            vTaskDelay(pdMS_TO_TICKS(1)); \
             timeout -= 10; \
         } \
         if (timeout <= 0) \
@@ -125,7 +126,7 @@ bool aht20_wait_for_measurement(void)
 {
     for (uint32_t t = 0; t < 100; t++)
     {
-        delay_ms(1);
+        vTaskDelay(pdMS_TO_TICKS(1));
         if (!aht20_is_busy()) return true;
     }
     return false;

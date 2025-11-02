@@ -1,4 +1,6 @@
 #include "board.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 void board_lowlevel_init(void)
 {
@@ -42,4 +44,22 @@ void board_init(void)
     aht20_init();
     usart_receive_register(usart_received);
 	esp_at_receive_register(esp_at_received);
+}
+
+void vAssertCalled(const char *file, int line)
+{
+    portDISABLE_INTERRUPTS();
+    printf("Assert Called: %s(%d)\n", file, line);
+}
+
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+{
+    printf("Stack Overflowed: %s\n", pcTaskName);
+    configASSERT(0);
+}
+
+void vApplicationMallocFailedHook(void)
+{
+    printf("Malloc Failed\n");
+    configASSERT(0);
 }

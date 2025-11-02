@@ -39,4 +39,14 @@
 .\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\esp_at.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\esp_at.o: ..\driver\tim\delay.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\FreeRTOS.h
+.\objects\esp_at.o: ..\third_lib\freertos\portable\FreeRTOSConfig.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\projdefs.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\portable.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\deprecated_definitions.h
+.\objects\esp_at.o: ..\third_lib\freertos\portable\portmacro.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\mpu_wrappers.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\task.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\list.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\semphr.h
+.\objects\esp_at.o: ..\third_lib\freertos\include\queue.h
