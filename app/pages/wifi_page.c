@@ -1,6 +1,4 @@
-#include "image.h"
-#include "lcd.h"
-#include "fonts.h"
+#include "ui.h"
 #include "app.h"
 #include <string.h>
 
@@ -14,9 +12,9 @@ void wifi_page_display(void)
         start_x = (lcddev.width - len + 1) / 2;
     }
 
-    lcd_fill(0, 0, 240, 320, BLACK);
-    lcd_show_image(30, 25, &img_wifi);
-    lcd_show_string(88, 200, "WiFi", &font32_maple, 1, GREEN, BLACK);
-    lcd_show_string(start_x, 240, ssid, &font32_maple, 1, WHITE, BLACK);
-    lcd_show_string(72,280,"连接中...", &font32_maple, 1,YELLOW, BLACK);
+    ui_fill_color(0, 0, 240, 320, BLACK);
+    ui_draw_image(30, 25, &img_wifi);
+    ui_write_string(88, 200, "WiFi", &font32_maple, 1, GREEN, BLACK);
+    ui_write_string(start_x, 240, ssid, &font32_maple, 1, WHITE, BLACK);
+    ui_write_string(72,280,"连接中...", &font32_maple, 1,YELLOW, BLACK);
 }

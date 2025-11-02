@@ -1,6 +1,8 @@
 .\objects\wifi_page.o: ..\app\pages\wifi_page.c
-.\objects\wifi_page.o: ..\driver\lcd\image.h
+.\objects\wifi_page.o: ..\app\include\ui.h
 .\objects\wifi_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\wifi_page.o: ..\driver\lcd\fonts.h
+.\objects\wifi_page.o: ..\driver\lcd\image.h
 .\objects\wifi_page.o: ..\driver\lcd\lcd.h
 .\objects\wifi_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\wifi_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -38,6 +40,5 @@
 .\objects\wifi_page.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\wifi_page.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\wifi_page.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\wifi_page.o: ..\driver\lcd\fonts.h
 .\objects\wifi_page.o: ..\app\include\app.h
 .\objects\wifi_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h

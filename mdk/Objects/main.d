@@ -51,3 +51,4 @@
 .\objects\main.o: ..\driver\rtc\rtc.h
 .\objects\main.o: ..\app\include\app.h
 .\objects\main.o: ..\app\include\pages.h
+.\objects\main.o: ..\app\include\ui.h

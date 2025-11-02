@@ -1,4 +1,4 @@
-#include "lcd.h"
+#include "ui.h"
 #include "rtc.h"
 #include "app.h"
 #include <string.h>
@@ -17,14 +17,14 @@ rtc_datetime_t now;  // 当前 RTC 时间（全局变量）
  */
 void main_page_display(void)
 {
-    lcd_fill(0, 0, 240, 320, BLACK);
+    ui_fill_color(0, 0, 240, 320, BLACK);
 
     // 顶部信息区域（白底）
     do
     {
-        lcd_fill(15, 15, 209, 139,WHITE);
+        ui_fill_color(15, 15, 209, 139,WHITE);
 
-        lcd_show_image(23, 20, &img_icon_wifi);
+        ui_draw_image(23, 20, &img_icon_wifi);
 
         // 在标题区显示 WiFi SSID（使用全局宏/常量 WIFI_SSID）
         main_page_redraw_wifi_ssid(WIFI_SSID);
@@ -43,9 +43,9 @@ void main_page_display(void)
     // 左下室内环境信息区域（青色背景）
     do 
     {
-        lcd_fill(15, 165, 99, 139,TEAL);
+        ui_fill_color(15, 165, 99, 139,TEAL);
 
-        lcd_show_string(25, 170, "室内环境", &font20_maple, 1, BLACK, WHITE);
+        ui_write_string(25, 170, "室内环境", &font20_maple, 1, BLACK, WHITE);
 
         // 初始值为 "--"（表示未知/未初始化），这里用两个字符 '-' 填充 char 数组初始化
         main_page_redraw_inner_tempreature('--');
@@ -55,7 +55,7 @@ void main_page_display(void)
     // 右下室外信息区域（橙色背景）
     do
     {
-        lcd_fill(125, 165, 99, 139,RGB565(253, 135, 75));
+        ui_fill_color(125, 165, 99, 139,RGB565(253, 135, 75));
 
         // 绘制城市名
         main_page_redraw_outdoor_city("湛江");
@@ -75,7 +75,7 @@ void main_page_display(void)
  */
 void main_page_redraw_wifi_ssid(const char *ssid)
 {
-    lcd_fill(50, 23, 150, 20, WHITE);
+    ui_fill_color(50, 23, 150, 20, WHITE);
 
     // 缓冲区大小 15 字节（包括结尾 '\0'）
     // 我们用 snprintf(str,15,"%14s", ssid) 将 SSID 限制到最多 14 个字符，保证不溢出
@@ -83,7 +83,7 @@ void main_page_redraw_wifi_ssid(const char *ssid)
     char str[15];
     snprintf(str, 15, "%14s", ssid);
 
-    lcd_show_string(50, 23, str, &font20_maple, 1, GREEN, WHITE);
+    ui_write_string(50, 23, str, &font20_maple, 1, GREEN, WHITE);
 }
 
 /**
@@ -92,7 +92,7 @@ void main_page_redraw_wifi_ssid(const char *ssid)
  */
 void main_page_redraw_time(rtc_datetime_t *time)
 {
-    lcd_fill(25, 42, 190, 76, WHITE);
+    ui_fill_color(25, 42, 190, 76, WHITE);
 
     // 缓冲区 6 字节：HH:MM + '\0' 需要 6 字节（例如 "08:05\0"）
     char str[6];
@@ -100,7 +100,7 @@ void main_page_redraw_time(rtc_datetime_t *time)
     // 注意：time->hour/time->minute 的类型应与 %02u 匹配（通常是 unsigned int/uint8_t）
     snprintf(str,sizeof(str),"%02u:%02u",time->hour ,time->minute);
 
-    lcd_show_string(25, 42, str, &font76_maple, 1, BLACK, WHITE);
+    ui_write_string(25, 42, str, &font76_maple, 1, BLACK, WHITE);
 }
 
 /**
@@ -109,7 +109,7 @@ void main_page_redraw_time(rtc_datetime_t *time)
  */
 void main_page_redraw_date(rtc_datetime_t *date)
 {
-    lcd_fill(35, 121, 20, 20, WHITE);
+    ui_fill_color(35, 121, 20, 20, WHITE);
 
     // 缓冲区 18 字节（包括 '\0'）：
     // 例如 "2025/10/27 星期一" 长度为 4+1+2+1+2+1+3 = 14（不同语言环境可能略有差别），18 是安全的
@@ -127,7 +127,7 @@ void main_page_redraw_date(rtc_datetime_t *date)
                 date-> weekday == 7 ? "日" : "X" 
             );
 
-    lcd_show_string(35, 121, str, &font20_maple, 1, BLACK, WHITE);
+    ui_write_string(35, 121, str, &font20_maple, 1, BLACK, WHITE);
 }
 
 /**
@@ -138,7 +138,7 @@ void main_page_redraw_date(rtc_datetime_t *date)
  */
 void main_page_redraw_inner_tempreature(float tempreature)
 {
-    lcd_fill(30, 195, 70, 54, TEAL);
+    ui_fill_color(30, 195, 70, 54, TEAL);
 
     // 字符串缓冲区 3 字节，用于存放两位数 + '\0'，例如 "23\0"
     // 初始化为 {'-','-'}，字符串末尾自动被下一行 snprintf 写入 '\0'（但这里手动初始化未包含 '\0' —— 实际 C 规定静态初始化会在尾部补0）
@@ -149,9 +149,9 @@ void main_page_redraw_inner_tempreature(float tempreature)
     if(tempreature > -10.0f && tempreature <= 100.0f)
         snprintf(str, sizeof(str), "%2.0f", tempreature);
 
-    lcd_show_string(30, 195, str, &font54_maple, 1, BLACK, TEAL);
+    ui_write_string(30, 195, str, &font54_maple, 1, BLACK, TEAL);
 
-    lcd_show_string(86, 213, "℃", &font32_maple,1, BLACK, WHITE);    
+    ui_write_string(86, 213, "℃", &font32_maple,1, BLACK, WHITE);    
 }
 
 /**
@@ -160,7 +160,7 @@ void main_page_redraw_inner_tempreature(float tempreature)
  */
 void main_page_redraw_inner_humidity(float humiduty)
 {
-    lcd_fill(28, 239, 82, 62, TEAL);
+    ui_fill_color(28, 239, 82, 62, TEAL);
 
     // 缓冲区 3 字节足够显示两位整数和终止符
     char str[3];
@@ -170,16 +170,16 @@ void main_page_redraw_inner_humidity(float humiduty)
     if(humiduty > 0.0f && humiduty <= 99.99f)
         snprintf(str, sizeof(str), "%2.0f", humiduty);
 
-    lcd_show_string(28, 239, str, &font62_maple, 1, BLACK, TEAL);
+    ui_write_string(28, 239, str, &font62_maple, 1, BLACK, TEAL);
 
-    lcd_show_string(91, 262, "%", &font32_maple, 1, BLACK, WHITE);    
+    ui_write_string(91, 262, "%", &font32_maple, 1, BLACK, WHITE);    
 }
 
 /**
  * 在室外信息区显示城市名称
  * 参数：const char *city - 城市字符串
- * 说明/问题点：这里函数内有个局部 str[9] 缓冲区但最终并未使用它（直接把 city 传给 lcd_show_string）。
- * 这会造成多余的栈分配；如果想要限制显示长度，应使用 snprintf 填充 str 并传入 str 给 lcd_show_string。
+ * 说明/问题点：这里函数内有个局部 str[9] 缓冲区但最终并未使用它（直接把 city 传给 ui_write_string）。
+ * 这会造成多余的栈分配；如果想要限制显示长度，应使用 snprintf 填充 str 并传入 str 给 ui_write_string。
  */
 void main_page_redraw_outdoor_city(const char *city)
 {
@@ -188,7 +188,7 @@ void main_page_redraw_outdoor_city(const char *city)
     // 这里使用 snprintf 将 city 复制到 str 中，防止 city 过长导致溢出
     snprintf(str, 9, "%s", city);
 
-    lcd_show_string(127, 170, str, &font20_maple, 1, BLACK, WHITE);
+    ui_write_string(127, 170, str, &font20_maple, 1, BLACK, WHITE);
 }
 
 /**
@@ -197,7 +197,7 @@ void main_page_redraw_outdoor_city(const char *city)
  */
 void main_page_redraw_outdoor_tempreature(float tempreature)
 {
-    lcd_fill(135, 186, 54, 54, RGB565(253, 135, 75));
+    ui_fill_color(135, 186, 54, 54, RGB565(253, 135, 75));
 
     // 数值缓冲区，默认显示为 "--"
     char str[3] = {'-','-'};
@@ -206,9 +206,9 @@ void main_page_redraw_outdoor_tempreature(float tempreature)
     if(tempreature > -10.0f && tempreature <= 100.0f)
         snprintf(str, sizeof(str), "%2.0f", tempreature);
 
-    lcd_show_string(135,186, str, &font54_maple, 1, BLACK, WHITE);
+    ui_write_string(135,186, str, &font54_maple, 1, BLACK, WHITE);
 
-    lcd_show_string(192, 202, "℃", &font32_maple, 1, BLACK, WHITE);    
+    ui_write_string(192, 202, "℃", &font32_maple, 1, BLACK, WHITE);    
 }
 
 /**
@@ -221,7 +221,7 @@ void main_page_redraw_outdoor_tempreature(float tempreature)
  */
 void main_page_redraw_outdoor_weather_icon(const int code)
 {
-    lcd_show_image(133, 239, &img_icon_wenduji);
+    ui_draw_image(133, 239, &img_icon_wenduji);
 
     const image_t *icon = NULL;
 
@@ -243,5 +243,5 @@ void main_page_redraw_outdoor_weather_icon(const int code)
     else
         icon = &img_icon_na;
 
-    lcd_show_image(160, 240, icon);
+    ui_draw_image(160, 240, icon);
 }

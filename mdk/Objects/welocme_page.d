@@ -1,6 +1,8 @@
 .\objects\welocme_page.o: ..\app\pages\welocme_page.c
-.\objects\welocme_page.o: ..\driver\lcd\image.h
+.\objects\welocme_page.o: ..\app\include\ui.h
 .\objects\welocme_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\welocme_page.o: ..\driver\lcd\fonts.h
+.\objects\welocme_page.o: ..\driver\lcd\image.h
 .\objects\welocme_page.o: ..\driver\lcd\lcd.h
 .\objects\welocme_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\welocme_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -38,4 +40,3 @@
 .\objects\welocme_page.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\welocme_page.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\welocme_page.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\welocme_page.o: ..\driver\lcd\fonts.h

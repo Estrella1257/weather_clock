@@ -1,6 +1,8 @@
 .\objects\error_page.o: ..\app\pages\error_page.c
-.\objects\error_page.o: ..\driver\lcd\image.h
+.\objects\error_page.o: ..\app\include\ui.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\error_page.o: ..\driver\lcd\fonts.h
+.\objects\error_page.o: ..\driver\lcd\image.h
 .\objects\error_page.o: ..\driver\lcd\lcd.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -38,7 +40,6 @@
 .\objects\error_page.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\error_page.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\error_page.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\error_page.o: ..\driver\lcd\fonts.h
 .\objects\error_page.o: ..\driver\tim\delay.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\error_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h

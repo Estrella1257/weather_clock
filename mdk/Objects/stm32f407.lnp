@@ -3,6 +3,7 @@
 ".\objects\board.o"
 ".\objects\app.o"
 ".\objects\wifi.o"
+".\objects\ui.o"
 ".\objects\usart.o"
 ".\objects\delay.o"
 ".\objects\aht20.o"

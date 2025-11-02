@@ -3,10 +3,12 @@
 #include "main.h"
 #include "app.h"
 #include "pages.h"
+#include "ui.h"
 
 static void main_init(void *param)
 {
 	board_init();
+	ui_init();
 
 	welcome_page_display();
 

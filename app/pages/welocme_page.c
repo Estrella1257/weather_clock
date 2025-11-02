@@ -1,12 +1,10 @@
-#include "image.h"
-#include "lcd.h"
-#include "fonts.h"
+#include "ui.h"
 
 void welcome_page_display(void)
 {
-    lcd_fill(0, 0, 240, 320, CYAN);
-    lcd_show_image(30, 30, &img_mingrixiang);
-    lcd_show_string(52, 216, "Estrella", &font32_maple, 1, GREEN, BLACK);
-    lcd_show_string(52,244,"连接中...", &font32_maple, 1,YELLOW,BLACK);
-    lcd_show_string(43, 272, "Loading...", &font32_maple, 1, BLUE, BLACK);
+    ui_fill_color(0, 0, 240, 320, CYAN);
+    ui_draw_image(30, 30, &img_mingrixiang);
+    ui_write_string(52, 216, "Estrella", &font32_maple, 1, GREEN, BLACK);
+    ui_write_string(52,244,"连接中...", &font32_maple, 1,YELLOW,BLACK);
+    ui_write_string(43, 272, "Loading...", &font32_maple, 1, BLUE, BLACK);
 }

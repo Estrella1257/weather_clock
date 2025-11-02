@@ -1,6 +1,9 @@
 .\objects\main_page.o: ..\app\pages\main_page.c
-.\objects\main_page.o: ..\driver\lcd\lcd.h
+.\objects\main_page.o: ..\app\include\ui.h
 .\objects\main_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main_page.o: ..\driver\lcd\fonts.h
+.\objects\main_page.o: ..\driver\lcd\image.h
+.\objects\main_page.o: ..\driver\lcd\lcd.h
 .\objects\main_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\main_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\main_page.o: ..\firmware\cmsis\device\stm32f4xx.h
@@ -37,8 +40,6 @@
 .\objects\main_page.o: ..\firmware\driver\inc\stm32f4xx_dac.h
 .\objects\main_page.o: ..\firmware\driver\inc\stm32f4xx_dcmi.h
 .\objects\main_page.o: ..\firmware\driver\inc\stm32f4xx_fsmc.h
-.\objects\main_page.o: ..\driver\lcd\fonts.h
-.\objects\main_page.o: ..\driver\lcd\image.h
 .\objects\main_page.o: ..\driver\rtc\rtc.h
 .\objects\main_page.o: ..\app\include\app.h
 .\objects\main_page.o: G:\keil_5\ARM\ARMCC\Bin\..\include\string.h
