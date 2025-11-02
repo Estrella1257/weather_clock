@@ -10,6 +10,7 @@
 #include "esp_at.h"
 #include "aht20.h"
 #include "weather.h"
+#include "workqueue.h"
 
 //时间单位宏定义，方便后续设置延时
 #define MILLISECONDS(x) (x)                   // 毫秒直接返回
@@ -269,57 +270,43 @@ static void outdoor_update(void)
 	main_page_redraw_outdoor_weather_icon(weather.weather_code);
 }
 
-static void loop_func(void *param)
+typedef void (*app_job_t)(void);
+static void app_work(void *param)
 {
-	uint32_t event;
-
-	while(1)
-	{
-		event = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-
-		if(event & LOOP_EVT_TIME_SYNC)
-		{
-			time_sync();
-		}
-		if(event & LOOP_EVT_WIFI_UPDATE)
-		{
-			wifi_update();
-		}
-		if(event & LOOP_EVT_TIME_UPDATE)
-		{
-			time_update();
-		}
-		if(event & LOOP_EVT_INNER_UPDATE)
-		{
-			inner_update();
-		}
-		if(event & LOOP_EVT_OUTDOOR_UPDATE)
-		{
-			outdoor_update();
-		}
-	}
+	app_job_t job = (app_job_t)param;
+	job();
 }
 
-static void loop_timer_cb(TimerHandle_t timer)
+static void work_timer_cb(TimerHandle_t timer)
 {
-	uint32_t event = (uint32_t)pvTimerGetTimerID(timer);
-	xTaskNotify(loop_task, event, eSetBits);
+	app_job_t job = (app_job_t)pvTimerGetTimerID(timer);
+	workqueue_run(app_work, (void *)job);
+}
+
+static void app_timer_cb(TimerHandle_t timer)
+{
+	app_job_t job = (app_job_t)pvTimerGetTimerID(timer);
+	job();
 }
 
 void main_loop_init(void)
 {
-	time_sync_timer = xTimerCreate("time sync", 1, pdFALSE, (void *)LOOP_EVT_TIME_SYNC, loop_timer_cb);
-	wifi_update_timer = xTimerCreate("wifi update", pdMS_TO_TICKS(WIFI_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_WIFI_UPDATE, loop_timer_cb);
-	time_update_timer = xTimerCreate("time update", pdMS_TO_TICKS(TIME_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_TIME_UPDATE, loop_timer_cb);
-	inner_update_timer = xTimerCreate("inner update", pdMS_TO_TICKS(INNER_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_INNER_UPDATE, loop_timer_cb);
-	outdoor_update_timer = xTimerCreate("outdoor update", pdMS_TO_TICKS(OUTDOOR_UPDATE_INTERVAL), pdTRUE, (void *)LOOP_EVT_OUTDOOR_UPDATE, loop_timer_cb);
+    time_sync_timer = xTimerCreate("time sync", pdMS_TO_TICKS(200), pdFALSE, time_sync, work_timer_cb);
+    wifi_update_timer = xTimerCreate("wifi update", pdMS_TO_TICKS(WIFI_UPDATE_INTERVAL), pdTRUE, (void *)wifi_update, work_timer_cb);
+    time_update_timer = xTimerCreate("time update", pdMS_TO_TICKS(TIME_UPDATE_INTERVAL), pdTRUE, (void *)time_update, app_timer_cb);
+    inner_update_timer = xTimerCreate("inner update", pdMS_TO_TICKS(INNER_UPDATE_INTERVAL), pdTRUE, (void *)inner_update, work_timer_cb);
+    outdoor_update_timer = xTimerCreate("outdoor update", pdMS_TO_TICKS(1), pdFALSE, (void *)outdoor_update, work_timer_cb);
+    //outdoor_update_timer = xTimerCreate("outdoor update", pdMS_TO_TICKS(OUTDOOR_UPDATE_INTERVAL), pdTRUE, (void *)outdoor_update, work_timer_cb);
 
-	xTaskCreate(loop_func, "loop", 1024, NULL, 5, &loop_task);
-
-	xTaskNotify(loop_task, LOOP_EVT_ALL, eSetBits);
+	workqueue_run(app_work, wifi_update);
+	workqueue_run(app_work, outdoor_update);
+    workqueue_run(app_work, time_sync);
+    workqueue_run(app_work, inner_update);
 
 	xTimerStart(wifi_update_timer, 0);
-	xTimerStart(time_update_timer, 0);
-	xTimerStart(inner_update_timer, 0);
+	xTimerStart(time_sync_timer, 0);
+    xTimerStart(time_update_timer, 0);
 	xTimerStart(outdoor_update_timer, 0);
+    xTimerStart(inner_update_timer, 0);
+
 }

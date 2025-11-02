@@ -4,6 +4,7 @@
 ".\objects\app.o"
 ".\objects\wifi.o"
 ".\objects\ui.o"
+".\objects\workqueue.o"
 ".\objects\usart.o"
 ".\objects\delay.o"
 ".\objects\aht20.o"

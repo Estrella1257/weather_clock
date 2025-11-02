@@ -109,6 +109,8 @@ void main_page_redraw_time(rtc_datetime_t *time)
  */
 void main_page_redraw_date(rtc_datetime_t *date)
 {
+    if (date->year == 2000) return;
+
     ui_fill_color(35, 121, 20, 20, WHITE);
 
     // »º³åÇø 18 ×Ö½Ú£¨°üÀ¨ '\0'£©£º

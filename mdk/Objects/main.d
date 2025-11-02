@@ -52,3 +52,4 @@
 .\objects\main.o: ..\app\include\app.h
 .\objects\main.o: ..\app\include\pages.h
 .\objects\main.o: ..\app\include\ui.h
+.\objects\main.o: ..\app\include\workqueue.h

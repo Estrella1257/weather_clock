@@ -408,6 +408,11 @@
               <FileType>1</FileType>
               <FilePath>..\app\ui.c</FilePath>
             </File>
+            <File>
+              <FileName>workqueue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\workqueue.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -4,6 +4,7 @@
 #include "app.h"
 #include "pages.h"
 #include "ui.h"
+#include "workqueue.h"
 
 static void main_init(void *param)
 {
@@ -15,7 +16,7 @@ static void main_init(void *param)
 	wifi_init();
 	wifi_page_display();
 	wifi_wait_connected();
-
+		
 	main_page_display();
 	main_loop_init();
 
@@ -25,6 +26,7 @@ static void main_init(void *param)
 int main(void)
 {
 	board_lowlevel_init();
+	workqueue_init();
 
 	xTaskCreate(main_init, "init", 1024, NULL, 9, NULL);
 
